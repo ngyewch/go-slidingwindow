@@ -32,7 +32,13 @@ func (w *SlidingWindow) doPurgeExpired() {
 			break
 		}
 	}
-	w.entries = w.entries[index:]
+	if index > 0 {
+		arr := make([]slidingWindowEntry, len(w.entries) - index)
+		for i := 0; i < len(arr); i++ {
+			arr[i] = w.entries[i + index]
+		}
+		w.entries = arr
+	}
 }
 
 func (w *SlidingWindow) doGet() []interface{} {
